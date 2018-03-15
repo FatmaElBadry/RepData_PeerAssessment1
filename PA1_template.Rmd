@@ -9,7 +9,7 @@ output:
 ## Loading and preprocessing the data
 
 1. Load The Data & Process the data
-```{r}
+```{r echo = TRUE}
 setwd("D://DataScienceCourse//Course 5//Week 2//Week2 Project")
 library(ggplot2)
 
@@ -18,7 +18,7 @@ summary(acti_data)
 ```
 
 2. Process the data
-```{r}
+```{r echo = TRUE}
 head(acti_data)
 acti_data_no_na <- na.omit(acti_data)
 ```
@@ -26,34 +26,34 @@ acti_data_no_na <- na.omit(acti_data)
 
 ## What is mean total number of steps taken per day?
 1. Calculate the total number of steps taken per day
-```{r}
+```{r echo = TRUE}
 stepsByDay <- tapply(acti_data_no_na$steps, acti_data_no_na$date, sum,na.rm=TRUE)
 head(stepsByDay)
 
 ```
 
 2. Make a histogram of the total number of steps taken each day
-```{r}
+```{r echo = TRUE}
 qplot(stepsByDay, xlab='Total steps per day', ylab='Frequency using binwith 500', binwidth=500)
 ```
 
 3.Calculate and report the mean and median of the total number of steps taken per day
 
 - Mean
-```{r}
+```{r echo = TRUE}
 stepsByDayMean <- mean(stepsByDay,na.rm=TRUE)
 stepsByDayMean
 ```
 
 - Median
-```{r}
+```{r echo = TRUE}
 stepsByDayMedian <- median(stepsByDay,na.rm=TRUE)
 stepsByDayMedian
 ```
 
 ## What is the average daily activity pattern?
 
-```{r}
+```{r echo = TRUE}
 averageStepsPerTimeBlock <- aggregate(x=list(meanSteps=acti_data$steps), by=list(interval=acti_data$interval), FUN=mean, na.rm=TRUE)
 
 head(averageStepsPerTimeBlock)
@@ -62,7 +62,7 @@ head(averageStepsPerTimeBlock)
 
 1.Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-```{r}
+```{r echo = TRUE}
 ggplot(data=averageStepsPerTimeBlock, aes(x=interval, y=meanSteps)) +
     geom_line() +
     xlab("5-minute interval") +
@@ -71,7 +71,7 @@ ggplot(data=averageStepsPerTimeBlock, aes(x=interval, y=meanSteps)) +
 
 2.Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r}
+```{r echo = TRUE}
  max.steps.interval <- averageStepsPerTimeBlock[which(averageStepsPerTimeBlock$meanSteps == max(averageStepsPerTimeBlock$meanSteps)),]
 
 max.steps.interval
@@ -83,7 +83,7 @@ Note that there are a number of days/intervals where there are missing values (c
 
 1.Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-```{r}
+```{r echo = TRUE}
 numMissingValues <- length(which(is.na(acti_data$steps)))
 numMissingValues
 ```
@@ -91,14 +91,14 @@ numMissingValues
 
 2.Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
-```{r}
+```{r echo = TRUE}
 acti_impute <- merge(acti_data,averageStepsPerTimeBlock ,na.rm=TRUE)
 head(acti_impute)
 ```
 
 3.Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-```{r}
+```{r echo = TRUE}
 acti_impute$steps[is.na(acti_impute$steps)] <- acti_impute$meanSteps[is.na(acti_impute$steps)]
 head(acti_impute)
 ```
@@ -106,7 +106,7 @@ head(acti_impute)
 
 4.Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-```{r}
+```{r echo = TRUE}
 stepsByDay2 <- tapply(acti_impute$steps, acti_impute$date, sum,na.rm=TRUE)
 head(stepsByDay2)
 
@@ -126,7 +126,7 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 
 1.Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
-```{r}
+```{r echo = TRUE}
 acti_impute$dateType <-  ifelse(weekdays(as.Date(acti_impute$date)) %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"), "Weekday", "Weekend")
 head(acti_impute)
 tail(acti_impute)
@@ -135,7 +135,7 @@ tail(acti_impute)
 
 2.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
 
-```{r}
+```{r echo = TRUE}
 averagedActivityDataImputed <- aggregate(steps ~ interval + dateType, data=acti_impute, mean)
 ggplot(averagedActivityDataImputed, aes(interval, steps)) + 
     geom_line() + 
