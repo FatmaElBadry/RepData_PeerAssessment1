@@ -9,7 +9,7 @@ output:
 ## Loading and preprocessing the data
 
 1. Load The Data & Process the data
-```{r echo = TRUE}
+```{r }
 setwd("D://DataScienceCourse//Course 5//Week 2//Week2 Project")
 library(ggplot2)
 
@@ -18,7 +18,7 @@ summary(acti_data)
 ```
 
 2. Process the data
-```{r echo = TRUE}
+```{r }
 head(acti_data)
 acti_data_no_na <- na.omit(acti_data)
 ```
